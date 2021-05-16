@@ -5,6 +5,13 @@ display.set_caption('Шедевр!')
 back = (255,255,255)
 window.fill(back)
 
+font.init()
+font = font.SysFont(None,76)
+lose1 = font.render('Синий лох', True,(64,34,90))
+lose2 = font.render('Красный лох', True,(64,34,90))
+speed_x = 4
+speed_y = 4
+
 clock = time.Clock()
 game = True
 finish = False
@@ -51,5 +58,23 @@ while game:
     raket_left.reset()
     raket_left.update_2()
     raket_right.update_1()
+
+    ball.rect.x += speed_x
+    ball.rect.y += speed_y
+
+    if sprite.collide_rect(raket_left,ball) or sprite.collide_rect(raket_right,ball):
+        speed_x *= -1
+        speed_y *= 1
+    if ball.rect.y > 504 or ball.rect.y < 0:
+        speed_y *= -1
+    if ball.rect.x > 520:
+        finish = True
+        window.blit(lose2, (50,200))
+        game = False
+    if ball.rect.x < 0:
+        finish = True        
+        window.blit(lose1, (50,200))
+        game = False
+
     display.update()
     clock.tick(60)
